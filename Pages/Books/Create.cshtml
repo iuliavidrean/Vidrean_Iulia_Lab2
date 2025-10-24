@@ -47,6 +47,32 @@
             </div>
 
             <div class="form-group">
+                <label class="control-label">Categories</label>
+                <table>
+                    <tr>
+                        @{
+                            int cnt = 0;
+                            // Folosim AssignedCategoryDataList, care ar trebui sa fie populata de BookCategoriesPageModel
+                            foreach (var cat in Model.AssignedCategoryDataList)
+                            {
+                                if (cnt++ % 3 == 0)
+                                {
+                                    @:</tr><tr>
+                                }
+                                @:<td>
+                                    <input type="checkbox"
+                                           name="selectedCategories"
+                                           value="@cat.CategoryID"
+                                           @(Html.Raw(cat.Assigned ? "checked=\"checked\"" : "")) />
+                                    @cat.Name 
+                                @:</td>
+                            }
+                            @:</tr>
+                        }
+                </table>
+            </div>
+
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
