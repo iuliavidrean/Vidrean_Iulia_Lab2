@@ -25,6 +25,11 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapGet("/", context => {
+    context.Response.Redirect("/Books");
+    return Task.CompletedTask;
+});
+
 app.MapRazorPages();
 
 app.Run();
