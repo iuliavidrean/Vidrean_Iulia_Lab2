@@ -28,7 +28,10 @@ namespace Vidrean_Iulia_Lab2.Pages.Publishers
                 return NotFound();
             }
 
-            var publisher = await _context.Publisher.FirstOrDefaultAsync(m => m.ID == id);
+            var publisher = await _context.Publisher
+                .Include(p => p.Books) // lab 4, cerinta 2
+                .FirstOrDefaultAsync(m => m.ID == id);
+
             if (publisher == null)
             {
                 return NotFound();

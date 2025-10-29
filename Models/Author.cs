@@ -6,13 +6,22 @@ namespace Vidrean_Iulia_Lab2.Models
     {
         public int ID { get; set; }
 
-        [Required]
+        [Required]   // este obligatoriu sa completezi si FirstName si LastName
         [StringLength(50)]
         public string FirstName { get; set; }
 
         [Required]
         [StringLength(50)]
         public string LastName { get; set; }
+
+        [Display(Name = "Full Name")]
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
 
         public ICollection<Book>? Books { get; set; }
     }

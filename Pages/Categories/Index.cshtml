@@ -2,35 +2,89 @@
 @model Vidrean_Iulia_Lab2.Pages.Categories.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Categories Index";
 }
 
-<h1>Index</h1>
+<h1>Categories</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create">Create New Category</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Category[0].CategoryName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Category) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Listă Categorii</h2>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Category Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CategoryD.Categories)
+                {
+                    string selectedRow = "";
+                    if (item.ID == Model.CategoryID)
+                    {
+                        selectedRow = "table-success";
+                    }
+
+                    <tr class="@selectedRow">
+                        <td>
+                            <a asp-page="./Index" asp-route-id="@item.ID">
+                                @Html.DisplayFor(modelItem => item.CategoryName)
+                            </a>
+                        </td>
+                        <td>
+                            <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                            <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-6">
+        @if (Model.CategoryD.Books != null)
+        {
+            var categoryName = Model.CategoryD.Categories
+            .FirstOrDefault(c => c.ID == Model.CategoryID)?.CategoryName;
+
+            <h3>Cărți în Categoria: @categoryName</h3>
+
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Titlu</th>
+                        <th>Autor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var book in Model.CategoryD.Books)
+                    {
+                        <tr>
+                            <td>
+                                @book.Title
+                            </td>
+                            <td>
+                                @book.Author.FirstName @book.Author.LastName
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (!Model.CategoryD.Books.Any())
+            {
+                <p class="alert alert-warning">Nu s-au găsit cărți pentru această categorie.</p>
+            }
+        }
+        else
+        {
+            <p class="mt-5 text-muted">Selectați o categorie din coloana alăturată pentru a vedea cărțile asociate.</p>
+        }
+    </div>
+</div>
